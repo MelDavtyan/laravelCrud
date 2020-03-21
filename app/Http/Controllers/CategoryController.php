@@ -44,8 +44,9 @@ class CategoryController extends Controller
 
         $form_data = array(
             'name' => $request->get('name'),
-            'parent_id' =>$request->get('parent_id')
+            'parent_id' => !is_null($request->get('parent_id')) ? $request->get('parent_id') : 0
         );
+
         Category::create($form_data);
         return back()->with('success','Category added successfully');
     }
