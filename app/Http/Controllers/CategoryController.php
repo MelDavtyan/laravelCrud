@@ -61,13 +61,9 @@ class CategoryController extends Controller
 
     public function show($id)
     {
-        $a = DB::table('categories')->select('id', 'parent_id','name')->get();
-        $categories = DB::table('categories')->where('parent_id', '=', $id)->get();
-//        dd($categories);
-        $catProds = Category::find($id)->products;
-        $products = DB::table('products')->where('category_id','=',$id)->get();
-//        dd($products);
-        return view('category.view',compact('catProds','categories','products'));
+        $categories = DB::table('categories')->where('parent_id', $id)->get();
+        $products = Products::where('category_id', $id)->paginate(1);
+        return view('category.view',compact('categories','products'));
     }
 
     /**

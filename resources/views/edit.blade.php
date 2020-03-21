@@ -1,7 +1,7 @@
+<?php // TODO create delete method for every single image ?>
 @extends('parent')
-
 @section('main')
-
+    <?php // TODO add opportunity to select multiple categories for one product ?>
     <div align="right">
         <a href="{{ route('products.index') }}" class="btn btn-dark">Product List</a>
     </div>
@@ -20,7 +20,7 @@
             </div>
             <div class="form-group">
                 <input type="file" multiple accept="image/*" name="product_image[]" class="form-control-file" id="product_image">
-            @for($i= 0; $i < count($images); $i++)
+                @for($i= 0; $i < count($images); $i++)
                     <img src="{{ URL::to('/') }}/images/{{ json_decode($product->product_image)[$i] }}" class="img-thumbnail" width="100">
                 @endfor
                 <input type="hidden" name="hidden_image" value="{{ $product->product_image }}">
@@ -28,6 +28,7 @@
             <div class="form-group">
                 <label for="category_id">Category</label>
                 <select type="text" name="category_id" class="form-control" id="category_id">
+                    <?php // TODO add default select option with value 0 ?>
                     @foreach($categories as $category)
                         <option name="category_name" value="{{ $category->id }}" {{$category->id == $product->category_id ? "selected" : ""}}>{{ $category->name }}</option>
                     @endforeach

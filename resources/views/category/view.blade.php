@@ -46,7 +46,7 @@
             <th width="20%">Category</th>
             <th width="40%">Action</th>
         </tr>
-        @foreach($catProds as $product)
+        @foreach($products as $product)
             <tr>
                 <td>
                     <img src="{{URL::to('/')}}/images/{{json_decode($product->product_image)[0]}}" class="img-thumbnail" width="75">
@@ -66,5 +66,5 @@
             </tr>
         @endforeach
     </table>
-{{--    {!! $products->links() !!}--}}
+    {!! $products->links() !!}
 @endsection
