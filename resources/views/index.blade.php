@@ -45,7 +45,11 @@
                     </td>
                     <td>{{$product->product_name}}</td>
                     <td>{{$product->product_price}}</td>
-                    <td>{{$product->category->name}}</td>
+                    <td>  |
+                        @foreach(json_decode($product->category_id) as $id)
+                            <?php $cat = \App\Category::find($id); echo $cat->name . " | ";?>
+                        @endforeach
+                    </td>
                     <td class="tdCustom">
                         <a href="{{ route('products.show',$product->id) }}" class="btn btn-primary">Show</a>
                         <a href="{{ route('products.edit',$product->id) }}" class="btn btn-warning">Edit</a>

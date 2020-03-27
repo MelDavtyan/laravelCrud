@@ -49,7 +49,7 @@
                 <div class="form-group">
                     <label for="parent_id">Parent Category</label>
                     <select type="text" name="parent_id" class="form-control" id="parent_id">
-                        <?php // TODO add default select option with value 0 ?>
+                            <option value="0">==SELECT==</option>
                         @foreach($categories as $category)
                             <option name="category_name" value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach

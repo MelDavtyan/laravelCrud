@@ -14,6 +14,10 @@
 {{--        @endforeach--}}
         <h3>Product Name - {{ $product->product_name }}</h3>
         <h3>Product Price - {{ $product->product_price }}</h3>
-        <h3>Category - {{ $product->category->name }}</h3>
+        <h3>Category - |
+            @foreach(json_decode($product->category_id) as $id)
+                <?php $cat = \App\Category::find($id); echo $cat->name . " | ";?>
+            @endforeach
+        </h3>
     </div>
 @endsection

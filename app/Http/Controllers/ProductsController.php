@@ -57,11 +57,12 @@ class ProductsController extends Controller
             $image[$i]->move(public_path('images'), $new_image_name);
         }
 
+        $options = $request->get('category_id');
         $form_data = array(
             'product_name' => $request->get('product_name'),
             'product_price' => intval($request->get('product_price')),
             'product_image' => json_encode($images),
-            'category_id' => $request->get('category_id'),
+            'category_id' => json_encode($options),
         );
 
         Products::create($form_data);
@@ -91,10 +92,17 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
+        $productCategoryIds = [];
         $product = Products::findOrFail($id);
         $categories = Category::all();
         $images = json_decode($product->product_image);
-        return view('edit', compact('product', 'categories', 'images'));
+
+        foreach (json_decode($product->category_id) as $productCategory)
+        {
+            $productCategoryIds[] = $productCategory;
+        }
+        $selectCategory = json_decode($product->category_id);
+        return view('edit', compact('product', 'categories', 'images','productCategoryIds'));
     }
 
     /**
@@ -113,27 +121,33 @@ class ProductsController extends Controller
                 'product_name' => 'required',
                 'product_price' => 'required|numeric',
                 'product_image' => 'required',
+                'category_id' => 'required'
             ]);
 
             $image_len = count($image);
-            for ($i = 0; $i < $image_len; $i++) {
+            for ( $i = 0; $i < $image_len; $i++) {
                 $new_image_name = rand() . $i . '.' . $image[$i]->
                     getClientOriginalExtension();
                 array_push($images, $new_image_name);
                 $image[$i]->move(public_path('images'), $new_image_name);
             }
+
+            $options = $request->get('category_id');
+
         } else {
             $request->validate([
                 'product_name' => 'required',
                 'product_price' => 'required|integer',
+                'category_id' => 'required'
             ]);
         }
         $form_data = array(
             'product_name' => $request->get('product_name'),
             'product_price' => $request->get('product_price'),
             'product_image' => json_encode($images),
+            'category_id' => json_encode($options),
+
         );
-        // TODO create opportunity to change the product category
         Products::whereId($id)->update($form_data);
         return redirect('products')->with('success', 'Product is successfully update');
     }
@@ -155,5 +169,23 @@ class ProductsController extends Controller
         $product->delete();
 
         return redirect('products')->with('success', 'Product has been deleted Successfully');
+    }
+
+    public function deleteImage($id,$imageName){
+        $productImage = Products::find($id)->product_image;
+        $images = json_decode($productImage);
+        $newImages = [];
+        foreach ($images as $image) {
+            if ($image == $imageName) {
+                $image_path = public_path() . '/images/' . $image;
+                unlink($image_path);
+            }else{
+                array_push($newImages, $image);
+            }
+        }
+        Products::find($id)->update([
+            'product_image' => json_encode($newImages),
+        ]);
+        return back();
     }
 }

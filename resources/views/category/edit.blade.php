@@ -18,8 +18,8 @@
     <div class="form-group">
         <label for="parent_id">Category</label>
         <select type="text" name="parent_id" class="form-control" id="parent_id">
-            <?php // TODO add default select option with value 0 ?>
-            @foreach($categories as $categoryForParent)
+            <option value="0">==SELECT==</option>
+        @foreach($categories as $categoryForParent)
                 <option name="category_name" value="{{ $categoryForParent->id }}" {{ $categoryForParent->id == $category->parent_id ? "selected" : "" }}>{{ $categoryForParent->name }}</option>
             @endforeach
         </select>

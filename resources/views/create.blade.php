@@ -1,7 +1,9 @@
 @extends('parent')
 
+
+
+
 @section('main')
-    <?php // TODO add opportunity to select multiple categories for one product ?>
     @if($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -29,15 +31,15 @@
                 <input type="text" name="product_price" class="form-control" id="product_price" placeholder="Product Price">
             </div>
 
+
             <div class="form-group">
-                <label for="category_id">Category</label>
-                <select type="text" name="category_id" class="form-control" id="category_id">
-                    <?php // TODO add default select option with value 0 ?>
+                <select name="category_id[]" class="form-control selectpicker" multiple>
                     @foreach($categories as $category)
                         <option name="category_name" value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
                 </select>
             </div>
+
 
             <div class="form-group">
                 <input type="file" multiple accept="image/*" name="product_image[]" class="form-control-file" id="product_image">
@@ -45,4 +47,20 @@
             <button type="submit" class="btn btn-primary">Add product</button>
         </form>
     </div>
+
+
 @endsection
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js"></script>
+<script>
+    // $(document).ready(function() {
+    //     $('.mdb-select').selectpicker();
+    // });
+
+    $(document).ready(function () {
+        $('.selectpicker').select2({
+            placeholder : 'Select Category',
+        });
+    })
+
+</script>

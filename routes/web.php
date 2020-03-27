@@ -20,4 +20,5 @@ Route::get('/', function () {
 
 Route::resource('products','ProductsController');
 Route::resource('category','CategoryController');
-Route::resource('subCategory','SubCategoryController');
+
+Route::get('/deleteImage/{products}/{image}','ProductsController@deleteImage')->name('deleteImage');
