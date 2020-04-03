@@ -116,6 +116,7 @@ class ProductsController extends Controller
     {
         $images = json_decode($request->hidden_image);
         $image = $request->file('product_image');
+        $options = $request->get('category_id');
         if (!empty($image)) {
             $request->validate([
                 'product_name' => 'required',
@@ -131,9 +132,6 @@ class ProductsController extends Controller
                 array_push($images, $new_image_name);
                 $image[$i]->move(public_path('images'), $new_image_name);
             }
-
-            $options = $request->get('category_id');
-
         } else {
             $request->validate([
                 'product_name' => 'required',
@@ -172,8 +170,8 @@ class ProductsController extends Controller
     }
 
     public function deleteImage($id,$imageName){
-        $productImage = Products::find($id)->product_image;
-        $images = json_decode($productImage);
+        $product = Products::find((int)$id);
+        $images = json_decode($product->product_image);
         $newImages = [];
         foreach ($images as $image) {
             if ($image == $imageName) {
@@ -183,9 +181,8 @@ class ProductsController extends Controller
                 array_push($newImages, $image);
             }
         }
-        Products::find($id)->update([
-            'product_image' => json_encode($newImages),
-        ]);
-        return back();
+        $product->product_image = json_encode($newImages);
+        $product->save();
+        echo json_encode($newImages);
     }
 }

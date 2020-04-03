@@ -6,6 +6,8 @@
         position: relative;
     }
     .close {
+        background: rgba(255,255,255,0.8);
+        cursor: pointer;
         position: absolute;
         top: 0;
         right: 0;
@@ -16,7 +18,6 @@
     <div align="right">
         <a href="{{ route('products.index') }}" class="btn btn-dark">Product List</a>
     </div>
-
     <div class="mx-auto my-0 my-sm-10 my-lg-4 p-3 col-md-8">
         <form method="post" action="{{route('products.update',$product->id)}}" enctype="multipart/form-data">
             @csrf
@@ -34,13 +35,12 @@
                 @for($i= 0; $i < count($images); $i++)
                     <div class="img_wrp">
                         <img src="{{ URL::to('/') }}/images/{{ json_decode($product->product_image)[$i] }}" class="img-thumbnail" width="100">
-                        <form action="{{ route('deleteImage',['products'=>$product->id,'image' => json_decode($product->product_image)[$i]])}}">
-                            @csrf
-                            <input type="submit" class="close" value="&times;">
-                        </form>
+                        <div class="close" onclick="deleteImage(event,'{{ $product->id }}','{{ json_decode($product->product_image)[$i] }}',this)">
+                            &times;
+                        </div>
                     </div>
                 @endfor
-                <input type="hidden" name="hidden_image" value="{{ $product->product_image }}">
+                <input type="hidden" name="hidden_image" id="hidden_image" value="{{ $product->product_image }}">
             </div>
 
             <div class="form-group">
@@ -60,15 +60,4 @@
             </div>
         </form>
     </div>
-
 @endsection
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js"></script>
-<script>
-
-
-    $(document).ready(function () {
-        $('.selectpicker').select2();
-    })
-
-</script>
