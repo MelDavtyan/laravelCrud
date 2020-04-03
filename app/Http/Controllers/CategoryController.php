@@ -62,7 +62,13 @@ class CategoryController extends Controller
     public function show($id)
     {
         $categories = DB::table('categories')->where('parent_id', $id)->get();
-        $products = Products::where('category_id', $id)->paginate(1);
+        $productIds = [];
+        foreach (Products::all() as $product){
+            if (in_array($id, json_decode($product->category_id))){
+                array_push($productIds, $product->id);
+            }
+        }
+        $products = Products::whereIn('id',$productIds)->paginate(10);
         return view('category.view',compact('categories','products'));
     }
 

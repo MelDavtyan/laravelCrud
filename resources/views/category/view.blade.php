@@ -1,3 +1,4 @@
+<?php use App\Category; ?>
 @extends('category.layout')
 <style>
     .tdCustom{
@@ -49,11 +50,16 @@
         @foreach($products as $product)
             <tr>
                 <td>
-                    <img src="{{URL::to('/')}}/images/{{json_decode($product->product_image)[0]}}" class="img-thumbnail" width="75">
+                    <?php $img = json_decode($product->product_image); ?>
+                    <img src="{{URL::to('/')}}/images/{{ is_array($img) && !empty($img) ? $img[0] : 'noimage.gif' }}" class="img-thumbnail" width="75">
                 </td>
                 <td>{{$product->product_name}}</td>
                 <td>{{$product->product_price}}</td>
-                <td>{{$product->category->name}}</td>
+                <td>
+                    @foreach(json_decode($product->category_id) as $id)
+                        <?php $cat = Category::find($id); echo $cat->name . " | ";?>
+                    @endforeach
+                </td>
                 <td class="tdCustom">
                     <a href="{{ route('products.show',$product->id) }}" class="btn btn-primary">Show</a>
                     <a href="{{ route('products.edit',$product->id) }}" class="btn btn-warning">Edit</a>

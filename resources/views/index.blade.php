@@ -43,7 +43,7 @@
                 <tr>
                     <td>
                         <?php $img = json_decode($product->product_image); ?>
-                        <img src="{{URL::to('/')}}/images/{{ is_array($img) && !empty($img) ? $img[0] : 'default.jpg' }}" class="img-thumbnail" width="75">
+                        <img src="{{URL::to('/')}}/images/{{ is_array($img) && !empty($img) ? $img[0] : 'noimage.gif' }}" class="img-thumbnail" width="75">
                     </td>
                     <td>{{$product->product_name}}</td>
                     <td>{{$product->product_price}}</td>
